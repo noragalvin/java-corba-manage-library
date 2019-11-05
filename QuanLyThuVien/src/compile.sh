@@ -1,1 +1,1 @@
-javac -cp "D:/code/HuongCauPhan/QLTV/QuanLyThuVien/src/sqljdbc42.jar" *.java ObjectInterface/*/*.java Implement/*.java Store/*.java
+javac *.java ObjectInterface/*/*.java Implement/*.java Store/*.java
