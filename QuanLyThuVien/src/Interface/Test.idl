@@ -1,0 +1,7 @@
+module ObjectInterface {
+    module Test {
+        interface TestInterface {
+            boolean test();
+        };
+    };
+};
