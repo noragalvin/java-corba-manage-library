@@ -6,8 +6,8 @@
 
 package quanlythuvien;
 
-import ObjectInterface.User.UserInterface;
-import ObjectInterface.User.UserInterfaceHelper;
+import ObjectInterface.UserModule.UserInterface;
+import ObjectInterface.UserModule.UserInterfaceHelper;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import org.omg.CORBA.ORB;
@@ -42,6 +42,7 @@ public class QuanLyThuVien {
             userImpl = UserInterfaceHelper.narrow(ncRef.resolve_str("User"));
                     
             (new DangNhap()).setVisible(true);
+            
         }catch (Exception e) {
             System.out.println("ERROR : " + e);
             e.printStackTrace(System.out);

@@ -1,7 +1,9 @@
 
+import Implement.Database;
 import Implement.UserImplement;
-import ObjectInterface.User.UserInterface;
-import ObjectInterface.User.UserInterfaceHelper;
+import ObjectInterface.UserModule.UserInterface;
+import ObjectInterface.UserModule.UserInterfaceHelper;
+import Store.State;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContextExt;
@@ -10,13 +12,11 @@ import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAHelper;
 
 
-
-
-
 public class Server {
 
     public static void main(String args[]) {
         try {
+            Store.State.db = new Database();
             // create and initialize the ORB
             ORB orb = ORB.init(args, null);
 
@@ -25,7 +25,7 @@ public class Server {
             rootpoa.the_POAManager().activate();
             
             // Create servant and register it with the ORB
-            UserImplement userImpl = new UserImplement();
+            UserImplement userImpl = new UserImplement() {};
             userImpl.setORB(orb);
 
             // get object reference from the servant            
@@ -45,6 +45,8 @@ public class Server {
 
             System.out.println("Ready..");
 
+            
+            
             // wait for invocations from clients
             orb.run();
         } catch (Exception e) {

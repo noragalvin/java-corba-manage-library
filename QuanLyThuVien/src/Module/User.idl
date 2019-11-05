@@ -1,0 +1,14 @@
+module ObjectInterface {
+    module UserModule {
+        struct User{
+            long id;
+            string name, username, type, password;
+        };
+
+        interface UserInterface {
+            attribute long id;
+            attribute string name, username, password, type;
+            boolean login(in string username, in string password);
+        };
+    };
+};

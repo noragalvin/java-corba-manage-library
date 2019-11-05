@@ -103,8 +103,8 @@ public class DangNhap extends javax.swing.JFrame {
 
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
         // TODO add your handling code here:
-        User result = (User)userImpl.login(txtTen.getText(), txtMatKhau.getText());
-        
+        userImpl.login(txtTen.getText(), txtMatKhau.getText());
+
     }//GEN-LAST:event_btnDangNhapActionPerformed
 
     /**

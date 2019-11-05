@@ -1,6 +1,6 @@
 rm -rf ObjectInterface
 
-idlj -fall Interface/User.idl
-idlj -fall Interface/Test.idl
+idlj -fall Module/User.idl
+idlj -fall Module/Test.idl
 
 

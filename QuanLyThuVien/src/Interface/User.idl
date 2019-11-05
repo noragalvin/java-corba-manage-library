@@ -1,8 +1,0 @@
-module ObjectInterface {
-    module User {
-        interface UserInterface {
-            attribute string username, password;
-            Object login(in string username, in string password);
-        };
-    };
-};
