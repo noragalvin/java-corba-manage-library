@@ -1,0 +1,8 @@
+module MyAccount {
+    interface Account {
+        attribute long accountNo;
+        void desposit(in double amount);
+        void withdraw(in double amount);
+        double reportBalance();
+    };
+};
