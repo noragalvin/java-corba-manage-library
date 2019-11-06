@@ -1,0 +1,17 @@
+module ObjectInterface {
+    module BillModule {
+        struct Bill{
+            long id, status, readerID;
+            string createdAt, deadline;
+        };
+
+        typedef sequence <Bill> Bills;
+
+        interface BillInterface {
+            attribute long id, status, readerID;
+            attribute string createdAt, deadline;
+            Bill getSingle(in long id);
+            Bills list(in long readerID);
+        };
+    };
+};

@@ -7,6 +7,7 @@
 package Store;
 
 import Implement.Database;
+import ObjectInterface.UserModule.User;
 
 /**
  *
@@ -14,4 +15,5 @@ import Implement.Database;
  */
 public class State {
     public static Database db;
+    public static User currentUser;
 }

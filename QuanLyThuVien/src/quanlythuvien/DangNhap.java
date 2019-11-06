@@ -6,7 +6,7 @@
 
 package quanlythuvien;
 
-import Entities.User;
+import ObjectInterface.UserModule.User;
 import static quanlythuvien.QuanLyThuVien.userImpl;
 
 /**
@@ -103,11 +103,16 @@ public class DangNhap extends javax.swing.JFrame {
 
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
         // TODO add your handling code here:
-        ObjectInterface.UserModule.User userLogin = userImpl.login(txtTen.getText(), txtMatKhau.getText());
+        User userLogin = userImpl.login(txtTen.getText(), txtMatKhau.getText());
+        
         if(userLogin.id == 0) {
             txtResult.setText("Lỗi đăng nhập");
-        } else
-            txtResult.setText("Đăng nhập thành công");
+        } else {
+            this.setVisible(false);
+            Store.State.currentUser = userLogin;
+            new NoraQuanLyUser().setVisible(true);
+        }
+            
     }//GEN-LAST:event_btnDangNhapActionPerformed
 
     /**

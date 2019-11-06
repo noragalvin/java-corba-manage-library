@@ -1,0 +1,12 @@
+module ObjectInterface {
+    module BillDetailModule {
+        struct BillDetail{
+            long billID, bookID, borrowAmount;
+        };
+
+        interface BillDetailInterface {
+            attribute long billID, bookID, borrowAmount;
+            BillDetail getSingle(in long id);
+        };
+    };
+};
