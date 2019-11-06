@@ -1,0 +1,17 @@
+module ObjectInterface {
+    module BookModule {
+        struct Book{
+            long id, inventory, borrowAmount, categoryID;
+            string bookName, publishingCompany, createdAt, categoryName;
+        };
+
+        typedef sequence <Book> Books;
+
+        interface BookInterface {
+            attribute long id, inventory, borrowAmount, categoryID;
+            attribute string bookName, publishingCompany, createdAt, categoryName;
+            Book getSingle(in long id);
+            Books list();
+        };
+    };
+};

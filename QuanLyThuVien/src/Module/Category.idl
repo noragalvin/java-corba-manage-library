@@ -1,0 +1,17 @@
+module ObjectInterface {
+    module CategoryModule {
+        struct Category{
+            long id;
+            string categoryName;
+        };
+
+        typedef sequence <Category> Categories;
+
+        interface CategoryInterface {
+            attribute long id;
+            attribute string categoryName;
+            Category getSingle(in long id);
+            Categories list();
+        };
+    };
+};

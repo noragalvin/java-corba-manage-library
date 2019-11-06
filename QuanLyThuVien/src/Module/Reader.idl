@@ -1,0 +1,17 @@
+module ObjectInterface {
+    module ReaderModule {
+        struct Reader{
+            long id;
+            string readerName, birthday, address, phoneNumber, email;
+        };
+
+        typedef sequence <Reader> Readers;
+
+        interface ReaderInterface {
+            attribute long id;
+            attribute string readerName, birthday, address, phoneNumber, email;
+            Reader getSingle(in long id);
+            Readers list();
+        };
+    };
+};

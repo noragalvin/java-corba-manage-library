@@ -5,10 +5,14 @@ module ObjectInterface {
             string name, username, type, password;
         };
 
+        typedef sequence <User> Users;
+
         interface UserInterface {
             attribute long id;
             attribute string name, username, password, type;
             User login(in string username, in string password);
+            User getSingle(in long id);
+            Users list();
         };
     };
 };
