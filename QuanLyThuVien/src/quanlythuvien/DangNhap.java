@@ -106,9 +106,8 @@ public class DangNhap extends javax.swing.JFrame {
         ObjectInterface.UserModule.User userLogin = userImpl.login(txtTen.getText(), txtMatKhau.getText());
         if(userLogin.id == 0) {
             txtResult.setText("Lỗi đăng nhập");
-        } else 
+        } else
             txtResult.setText("Đăng nhập thành công");
-
     }//GEN-LAST:event_btnDangNhapActionPerformed
 
     /**
