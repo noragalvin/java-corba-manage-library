@@ -27,7 +27,7 @@ public class UserImplement extends UserInterfacePOA {
     private ORB orb;
     private Database db;
     private Connection conn;
-    private User user;
+    private ObjectInterface.UserModule.User user = null;
 
     public UserImplement() {
         this.db = Store.State.db;
@@ -89,12 +89,21 @@ public class UserImplement extends UserInterfacePOA {
     }
 
     @Override
-    public boolean login(String username, String password) {
-        // this.db.connectDB();
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        return true;
+    public ObjectInterface.UserModule.User login(String username, String password) {
+        String query = String.format("SELECT * FROM users WHERE username='%s' AND password='%s'", username, password);
+        System.out.println(query);
+        
+        ResultSet rs = db.getData(query);
+        try {
+            if(rs.next()) {
+                this.user = new ObjectInterface.UserModule.User(rs.getInt("id"), rs.getString("name"), rs.getString("username"), rs.getString("type"), rs.getString("password"));
+            } else {
+                this.user = new ObjectInterface.UserModule.User(0, "", "", "", "");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ObjectInterface.UserModule.User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return this.user;
     }
 
 
