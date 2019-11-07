@@ -5,6 +5,12 @@
  */
 package quanlythuvien;
 
+import ObjectInterface.ReaderModule.Reader;
+import ObjectInterface.UserModule.User;
+import javax.swing.table.DefaultTableModel;
+import static quanlythuvien.QuanLyThuVien.readerImpl;
+import static quanlythuvien.QuanLyThuVien.userImpl;
+
 /**
  *
  * @author Hien Nhe
@@ -16,6 +22,8 @@ public class QuanLyDocGia extends javax.swing.JFrame {
      */
     public QuanLyDocGia() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        loadData();
     }
 
     /**
@@ -51,7 +59,7 @@ public class QuanLyDocGia extends javax.swing.JFrame {
         btnXoa1 = new javax.swing.JButton();
         btnCapNhat1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblData = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -151,10 +159,25 @@ public class QuanLyDocGia extends javax.swing.JFrame {
         );
 
         btnThem1.setText("Thêm");
+        btnThem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThem1ActionPerformed(evt);
+            }
+        });
 
         btnXoa1.setText("Xóa");
+        btnXoa1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoa1ActionPerformed(evt);
+            }
+        });
 
         btnCapNhat1.setText("Cập nhật");
+        btnCapNhat1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCapNhat1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -183,7 +206,7 @@ public class QuanLyDocGia extends javax.swing.JFrame {
                 .addGap(0, 16, Short.MAX_VALUE))
         );
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -202,7 +225,12 @@ public class QuanLyDocGia extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        tblData.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblData);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -232,6 +260,86 @@ public class QuanLyDocGia extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataMouseClicked
+        // get the model from the jtable
+        DefaultTableModel model = (DefaultTableModel)tblData.getModel();
+
+        // get the selected row index
+        int selectedRowIndex = tblData.getSelectedRow();
+
+        // set the selected row data into jtextfields
+        txtMaDG.setText(model.getValueAt(selectedRowIndex, 0).toString());
+        txtTenDG.setText(model.getValueAt(selectedRowIndex, 1).toString());
+        txtNgaySinh.setText(model.getValueAt(selectedRowIndex, 2).toString());
+        // 3 gioi tinh
+        txtDiaChi.setText(model.getValueAt(selectedRowIndex, 4).toString());
+        txtSDT.setText(model.getValueAt(selectedRowIndex, 5).toString());
+        txtMail.setText(model.getValueAt(selectedRowIndex, 6).toString());
+        
+        rdNam.setSelected(true);
+        rdNu.setSelected(false);
+        String type = model.getValueAt(selectedRowIndex, 3).toString();
+        if(type.equals("Nu") == true){
+            rdNam.setSelected(false);
+            rdNu.setSelected(true);
+        }
+
+
+    }//GEN-LAST:event_tblDataMouseClicked
+
+    private void btnThem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThem1ActionPerformed
+        String name = txtTenDG.getText();
+        String ngaySinh = txtNgaySinh.getText();
+        String diaChi = txtDiaChi.getText();
+        String sdt = txtSDT.getText();
+        String mail = txtMail.getText();
+        String gioitinh = "Nam";
+        if(rdNu.isSelected()) {
+            gioitinh = "Nu";
+        }
+        Reader r = new Reader(0, name, ngaySinh, diaChi, sdt, mail, gioitinh);
+        int result = readerImpl.add(r);
+        if(result > 0) {
+            Helpers.MessageBox("Success", "Add successfully", "success");
+            loadData();
+        } else {
+            Helpers.MessageBox("False", "Opps! Something went wrong", "error");
+        }
+    }//GEN-LAST:event_btnThem1ActionPerformed
+
+    private void btnXoa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoa1ActionPerformed
+        int id = Integer.parseInt(txtMaDG.getText());
+        Reader r = new Reader(id, "", "", "", "", "", "");
+        int result = readerImpl.delete(r);
+        if(result > 0) {
+            Helpers.MessageBox("Success", "Delete successfully", "success");
+            loadData();
+        } else {
+            Helpers.MessageBox("False", "Opps! Something went wrong", "error");
+        }
+    }//GEN-LAST:event_btnXoa1ActionPerformed
+
+    private void btnCapNhat1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhat1ActionPerformed
+        int id = Integer.parseInt(txtMaDG.getText());
+        String name = txtTenDG.getText();
+        String ngaySinh = txtNgaySinh.getText();
+        String diaChi = txtDiaChi.getText();
+        String sdt = txtSDT.getText();
+        String mail = txtMail.getText();
+        String gioitinh = "Nam";
+        if(rdNu.isSelected()) {
+            gioitinh = "Nu";
+        }
+        Reader r = new Reader(id, name, ngaySinh, diaChi, sdt, mail, gioitinh);
+        int result = readerImpl.update(r);
+        if(result > 0) {
+            Helpers.MessageBox("Success", "Update successfully", "success");
+            loadData();
+        } else {
+            Helpers.MessageBox("False", "Opps! Something went wrong", "error");
+        }
+    }//GEN-LAST:event_btnCapNhat1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -267,6 +375,16 @@ public class QuanLyDocGia extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void loadData() {
+        Reader[] readers = readerImpl.list();
+        
+        DefaultTableModel dtm = (DefaultTableModel)tblData.getModel();
+        dtm.setRowCount(0);
+        for(Reader r: readers) {
+            dtm.addRow(new Object[] {r.id, r.readerName, r.birthday, r.gender, r.address, r.phoneNumber, r.email});
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCapNhat1;
@@ -284,9 +402,9 @@ public class QuanLyDocGia extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
     private javax.swing.JRadioButton rdNam;
     private javax.swing.JRadioButton rdNu;
+    private javax.swing.JTable tblData;
     private javax.swing.JTextField txtDiaChi;
     private javax.swing.JTextField txtMaDG;
     private javax.swing.JTextField txtMail;

@@ -10,6 +10,7 @@ import ObjectInterface.CategoryModule.Category;
 import ObjectInterface.CategoryModule.CategoryInterfacePOA;
 import ObjectInterface.UserModule.User;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -83,17 +84,58 @@ public class CategoryImplement extends CategoryInterfacePOA {
 
     @Override
     public int add(Category o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int n = 0;
+        String query = "INSERT INTO categories(categoryName) VALUES(?)";
+        PreparedStatement pre;
+        try {
+            pre = conn.prepareStatement(query);
+            
+            pre.setString(1, o.categoryName);
+
+            
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ObjectInterface.UserModule.User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
     }
 
     @Override
     public int delete(Category o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int n = 0;
+                
+        String query = "UPDATE categories SET status = 0 WHERE id = ?";
+        PreparedStatement pre;
+        
+        try {
+            pre = conn.prepareStatement(query);
+            
+            pre.setInt(1, o.id);
+            
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ObjectInterface.UserModule.User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return n;
     }
 
     @Override
     public int update(Category o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int n = 0;
+        String query = "UPDATE categories SET categoryName = ? WHERE id = ?";
+        PreparedStatement pre;
+        try {
+            pre = conn.prepareStatement(query);
+            
+            pre.setString(1, o.categoryName);
+            pre.setInt(2, o.id);
+            
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ObjectInterface.UserModule.User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
     }
     
 }
