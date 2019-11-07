@@ -1,6 +1,15 @@
 
+import Implement.BookImplement;
+import Implement.CategoryImplement;
 import Implement.Database;
+import Implement.ReaderImplement;
 import Implement.UserImplement;
+import ObjectInterface.BookModule.BookInterface;
+import ObjectInterface.BookModule.BookInterfaceHelper;
+import ObjectInterface.CategoryModule.CategoryInterface;
+import ObjectInterface.CategoryModule.CategoryInterfaceHelper;
+import ObjectInterface.ReaderModule.ReaderInterface;
+import ObjectInterface.ReaderModule.ReaderInterfaceHelper;
 import ObjectInterface.UserModule.UserInterface;
 import ObjectInterface.UserModule.UserInterfaceHelper;
 import Store.State;
@@ -27,10 +36,22 @@ public class Server {
             // Create servant and register it with the ORB
             UserImplement userImpl = new UserImplement() {};
             userImpl.setORB(orb);
+            CategoryImplement catImpl = new CategoryImplement() {};
+            catImpl.setORB(orb);
+            ReaderImplement readerImpl = new ReaderImplement() {};
+            readerImpl.setORB(orb);
+            BookImplement bookImpl = new BookImplement() {};
+            bookImpl.setORB(orb);
 
             // get object reference from the servant            
             org.omg.CORBA.Object refUser = rootpoa.servant_to_reference(userImpl);
             UserInterface hrefUser = UserInterfaceHelper.narrow(refUser);
+            org.omg.CORBA.Object refCat = rootpoa.servant_to_reference(catImpl);
+            CategoryInterface hrefCat = CategoryInterfaceHelper.narrow(refCat);
+            org.omg.CORBA.Object refReader = rootpoa.servant_to_reference(readerImpl);
+            ReaderInterface hrefReader = ReaderInterfaceHelper.narrow(refReader);
+            org.omg.CORBA.Object refBook = rootpoa.servant_to_reference(bookImpl);
+            BookInterface hrefBook = BookInterfaceHelper.narrow(refBook);
 
             // get the root naming context
             // NameService invokes the name service
@@ -42,6 +63,12 @@ public class Server {
             // bind the Object Reference in Naming
             NameComponent pathUser[] = ncRef.to_name("User");
             ncRef.rebind(pathUser, hrefUser);
+            NameComponent pathCat[] = ncRef.to_name("Category");
+            ncRef.rebind(pathCat, hrefCat);
+            NameComponent pathReader[] = ncRef.to_name("Reader");
+            ncRef.rebind(pathReader, hrefReader);
+            NameComponent pathBook[] = ncRef.to_name("Book");
+            ncRef.rebind(pathBook, hrefBook);
 
             System.out.println("Ready..");
 

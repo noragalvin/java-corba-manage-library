@@ -12,6 +12,9 @@ module ObjectInterface {
             attribute string readerName, birthday, address, phoneNumber, email;
             Reader getSingle(in long id);
             Readers list();
+            long add(in Reader o);
+            long delete(in Reader o);
+            long update(in Reader o);
         };
     };
 };

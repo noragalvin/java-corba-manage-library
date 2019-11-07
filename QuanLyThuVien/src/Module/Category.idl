@@ -12,6 +12,9 @@ module ObjectInterface {
             attribute string categoryName;
             Category getSingle(in long id);
             Categories list();
+            long add(in Category o);
+            long delete(in Category o);
+            long update(in Category o);
         };
     };
 };

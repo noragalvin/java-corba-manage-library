@@ -5,17 +5,31 @@
  */
 package quanlythuvien;
 
+import ObjectInterface.BookModule.Author;
+import ObjectInterface.BookModule.Book;
+import ObjectInterface.CategoryModule.Category;
+import ObjectInterface.UserModule.User;
+import javafx.scene.control.ComboBox;
+import javax.swing.JComboBox;
+import javax.swing.table.DefaultTableModel;
+import static quanlythuvien.QuanLyThuVien.bookImpl;
+import static quanlythuvien.QuanLyThuVien.catImpl;
+import static quanlythuvien.QuanLyThuVien.userImpl;
+
 /**
  *
  * @author Hien Nhe
  */
-public class ThongTinSach extends javax.swing.JFrame {
-
+public class QuanLySach extends javax.swing.JFrame {
+    
     /**
      * Creates new form ThongTinSach
      */
-    public ThongTinSach() {
+    public QuanLySach() {
         initComponents();
+        loadCategories();
+        loadData();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -40,20 +54,20 @@ public class ThongTinSach extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         txtMaSach = new javax.swing.JTextField();
         txtTenSach = new javax.swing.JTextField();
-        cmbTheLoai = new javax.swing.JComboBox<>();
-        txtTacGia = new javax.swing.JComboBox<>();
-        cmbNXB = new javax.swing.JComboBox<>();
         txtNgayNhap = new javax.swing.JTextField();
         txtSLTon = new javax.swing.JTextField();
         txtSLMuon = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
+        cmbTheLoai = new javax.swing.JComboBox();
+        txtTacGia = new javax.swing.JTextField();
+        txtNXB = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         txtTimKiem = new javax.swing.JTextField();
         btnThem = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
         btnCapNhat = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblData = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -86,12 +100,6 @@ public class ThongTinSach extends javax.swing.JFrame {
 
         jLabel8.setText("SL mượn");
 
-        cmbTheLoai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        txtTacGia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cmbNXB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         txtSLMuon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSLMuonActionPerformed(evt);
@@ -99,6 +107,8 @@ public class ThongTinSach extends javax.swing.JFrame {
         });
 
         jLabel9.setText("Thông tin sách");
+
+        cmbTheLoai.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -113,10 +123,10 @@ public class ThongTinSach extends javax.swing.JFrame {
                     .addComponent(jLabel4))
                 .addGap(73, 73, 73)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cmbTheLoai, 0, 118, Short.MAX_VALUE)
                     .addComponent(txtTenSach)
-                    .addComponent(txtTacGia, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtMaSach))
+                    .addComponent(txtMaSach)
+                    .addComponent(cmbTheLoai, 0, 118, Short.MAX_VALUE)
+                    .addComponent(txtTacGia))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
@@ -125,10 +135,10 @@ public class ThongTinSach extends javax.swing.JFrame {
                     .addComponent(jLabel8))
                 .addGap(90, 90, 90)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtSLMuon)
+                    .addComponent(txtSLMuon, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
                     .addComponent(txtSLTon)
                     .addComponent(txtNgayNhap)
-                    .addComponent(cmbNXB, 0, 118, Short.MAX_VALUE))
+                    .addComponent(txtNXB))
                 .addGap(52, 52, 52))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(333, Short.MAX_VALUE)
@@ -145,13 +155,13 @@ public class ThongTinSach extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel5)
                     .addComponent(txtMaSach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbNXB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNXB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel6)
-                    .addComponent(cmbTheLoai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNgayNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNgayNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbTheLoai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(14, 14, 14)
@@ -165,24 +175,38 @@ public class ThongTinSach extends javax.swing.JFrame {
                             .addComponent(jLabel7))))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(txtTacGia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(txtTacGia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtSLMuon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8))))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
 
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         btnCapNhat.setText("Cập nhật");
+        btnCapNhat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCapNhatActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -211,7 +235,7 @@ public class ThongTinSach extends javax.swing.JFrame {
                 .addGap(0, 5, Short.MAX_VALUE))
         );
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
@@ -230,7 +254,12 @@ public class ThongTinSach extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        tblData.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblData);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -264,6 +293,84 @@ public class ThongTinSach extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSLMuonActionPerformed
 
+    private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataMouseClicked
+        // get the model from the jtable
+        DefaultTableModel model = (DefaultTableModel)tblData.getModel();
+
+        // get the selected row index
+        int selectedRowIndex = tblData.getSelectedRow();
+
+        // set the selected row data into jtextfields
+        txtMaSach.setText(model.getValueAt(selectedRowIndex, 0).toString());
+        txtTenSach.setText(model.getValueAt(selectedRowIndex, 2).toString());
+        txtTacGia.setText(model.getValueAt(selectedRowIndex, 3).toString());
+        txtNXB.setText(model.getValueAt(selectedRowIndex, 4).toString());
+        txtNgayNhap.setText(model.getValueAt(selectedRowIndex, 5).toString());
+        txtSLTon.setText(model.getValueAt(selectedRowIndex, 6).toString());
+        txtSLMuon.setText(model.getValueAt(selectedRowIndex, 7).toString());
+        
+        int count = cmbTheLoai.getItemCount();
+        for (int i = 0; i < count; i++) {
+            String selectedCategory = model.getValueAt(selectedRowIndex, 1).toString();
+            String cmbItem = cmbTheLoai.getItemAt(i).toString();
+            if(cmbItem.equals(selectedCategory) == true) {
+                cmbTheLoai.setSelectedIndex(i);
+            }
+        }
+
+    }//GEN-LAST:event_tblDataMouseClicked
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        String name = txtTenSach.getText();
+        Object item = cmbTheLoai.getSelectedItem();
+        int category_id = ((ComboItem)item).getValue();
+        String author = txtTacGia.getText();
+        String nxb = txtNXB.getText();
+        int ton = Integer.parseInt(txtSLTon.getText());
+        
+        Book b = new Book(0, ton, 0, category_id, name, nxb, "", "", author);
+        
+        int result = bookImpl.add(b);
+        if(result > 0) {
+            Helpers.MessageBox("Success", "Add successfully", "success");
+            loadData();
+        } else {
+            Helpers.MessageBox("False", "Opps! Something went wrong", "error");
+        }
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        String id = txtMaSach.getText();
+        Book b = new Book(Integer.parseInt(id), 0, 0, 0, "", "", "", "", "");
+        int result = bookImpl.delete(b);
+        if(result > 0) {
+            Helpers.MessageBox("Success", "Delete successfully", "success");
+            loadData();
+        } else {
+            Helpers.MessageBox("False", "Opps! Something went wrong", "error");
+        }
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
+        int id = Integer.parseInt(txtMaSach.getText());
+        String name = txtTenSach.getText();
+        Object item = cmbTheLoai.getSelectedItem();
+        int category_id = ((ComboItem)item).getValue();
+        String author = txtTacGia.getText();
+        String nxb = txtNXB.getText();
+        int ton = Integer.parseInt(txtSLTon.getText());
+        
+        Book b = new Book(id, ton, 0, category_id, name, nxb, "", "", author);
+        
+        int result = bookImpl.update(b);
+        if(result > 0) {
+            Helpers.MessageBox("Success", "Update successfully", "success");
+            loadData();
+        } else {
+            Helpers.MessageBox("False", "Opps! Something went wrong", "error");
+        }
+    }//GEN-LAST:event_btnCapNhatActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -281,30 +388,87 @@ public class ThongTinSach extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ThongTinSach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(QuanLySach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ThongTinSach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(QuanLySach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ThongTinSach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(QuanLySach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ThongTinSach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(QuanLySach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ThongTinSach().setVisible(true);
+                new QuanLySach().setVisible(true);
             }
         });
+    }
+    
+    public void loadCategories() {
+        cmbTheLoai.removeAllItems();
+        Category[] categories = catImpl.list();
+        for (Category category : categories) {
+            cmbTheLoai.addItem(new ComboItem(category.categoryName, category.id));
+        }
+    }
+   
+    
+    public void loadData() {
+        Book[] books = bookImpl.list();
+        
+        DefaultTableModel dtm = (DefaultTableModel)tblData.getModel();
+        dtm.setRowCount(0);
+        for(Book o: books) {
+            dtm.addRow(new Object[] {o.id, o.categoryName, o.bookName, o.author, o.publishingCompany, o.createdAt, o.inventory, o.borrowAmount});
+        }
+    }
+    
+    class ComboItem
+    {
+        private String key;
+        private int value;
+        private String value2;
+
+        public ComboItem(String key, int value)
+        {
+            this.key = key;
+            this.value = value;
+        }
+
+        private ComboItem(String key, String value) {
+            this.key = key;
+            this.value2 = value;
+        }
+
+        @Override
+        public String toString()
+        {
+            return key;
+        }
+
+        public String getKey()
+        {
+            return key;
+        }
+
+        public int getValue()
+        {
+            return value;
+        }
+        
+        public String getValue2()
+        {
+            return value2;
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCapNhat;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
-    private javax.swing.JComboBox<String> cmbNXB;
-    private javax.swing.JComboBox<String> cmbTheLoai;
+    private javax.swing.JComboBox cmbTheLoai;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -319,12 +483,13 @@ public class ThongTinSach extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tblData;
     private javax.swing.JTextField txtMaSach;
+    private javax.swing.JTextField txtNXB;
     private javax.swing.JTextField txtNgayNhap;
     private javax.swing.JTextField txtSLMuon;
     private javax.swing.JTextField txtSLTon;
-    private javax.swing.JComboBox<String> txtTacGia;
+    private javax.swing.JTextField txtTacGia;
     private javax.swing.JTextField txtTenSach;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables

@@ -5,6 +5,10 @@
  */
 package quanlythuvien;
 
+import ObjectInterface.UserModule.User;
+import javax.swing.table.DefaultTableModel;
+import static quanlythuvien.QuanLyThuVien.userImpl;
+
 /**
  *
  * @author Hien Nhe
@@ -15,7 +19,9 @@ public class QuanLyNguoiDung extends javax.swing.JFrame {
      * Creates new form QuanLyNguoiDung
      */
     public QuanLyNguoiDung() {
+        this.setLocationRelativeTo(null);
         initComponents();
+        loadData();
     }
 
     /**
@@ -38,14 +44,14 @@ public class QuanLyNguoiDung extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
         txtMatKhau = new javax.swing.JTextField();
-        cmbLoaiNguoiDung = new javax.swing.JComboBox<>();
+        cmbLoaiNguoiDung = new javax.swing.JComboBox<String>();
         jPanel3 = new javax.swing.JPanel();
         txtTimKiem1 = new javax.swing.JTextField();
         btnThem1 = new javax.swing.JButton();
         btnXoa1 = new javax.swing.JButton();
         btnCapNhat1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblData = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,7 +67,7 @@ public class QuanLyNguoiDung extends javax.swing.JFrame {
 
         jLabel9.setText("Quản lý người dùng");
 
-        cmbLoaiNguoiDung.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbLoaiNguoiDung.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Quản Trị", "Người dùng" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -121,10 +127,25 @@ public class QuanLyNguoiDung extends javax.swing.JFrame {
         );
 
         btnThem1.setText("Thêm");
+        btnThem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThem1ActionPerformed(evt);
+            }
+        });
 
         btnXoa1.setText("Xóa");
+        btnXoa1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoa1ActionPerformed(evt);
+            }
+        });
 
         btnCapNhat1.setText("Cập nhật");
+        btnCapNhat1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCapNhat1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -153,26 +174,23 @@ public class QuanLyNguoiDung extends javax.swing.JFrame {
                 .addGap(0, 19, Short.MAX_VALUE))
         );
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Mã DG", "Tên DG", "Ngày sinh", "Giới tính", "Địa chỉ", "SĐT", "Mail", "Ghi chú"
+                "Mã", "Tên", "Tên đăng nhập", "Mật khẩu", "Loại tài khoản"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+        ));
+        tblData.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tblData);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -199,6 +217,75 @@ public class QuanLyNguoiDung extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataMouseClicked
+        // get the model from the jtable
+        DefaultTableModel model = (DefaultTableModel)tblData.getModel();
+
+        // get the selected row index
+        int selectedRowIndex = tblData.getSelectedRow();
+
+        // set the selected row data into jtextfields
+        txtMa.setText(model.getValueAt(selectedRowIndex, 0).toString());
+        txtHoTen.setText(model.getValueAt(selectedRowIndex, 1).toString());
+        txtUsername.setText(model.getValueAt(selectedRowIndex, 2).toString());
+        txtMatKhau.setText(model.getValueAt(selectedRowIndex, 3).toString());
+
+        String type = model.getValueAt(selectedRowIndex, 4).toString();
+        cmbLoaiNguoiDung.setSelectedIndex(1);
+        if(type.equals("admin") == true){
+            cmbLoaiNguoiDung.setSelectedIndex(0);
+        }
+    }//GEN-LAST:event_tblDataMouseClicked
+
+    private void btnThem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThem1ActionPerformed
+        String name = txtHoTen.getText();
+        String username = txtUsername.getText();
+        String password = txtMatKhau.getText();
+        String type = "admin";
+        if (cmbLoaiNguoiDung.getSelectedIndex() == 1) {
+            type = "user";
+        }
+        User u = new User(0, name, username, type, password);
+        int result = userImpl.add(u);
+        if(result > 0) {
+            Helpers.MessageBox("Success", "Add successfully", "success");
+            loadData();
+        } else {
+            Helpers.MessageBox("False", "Opps! Something went wrong", "error");
+        }
+    }//GEN-LAST:event_btnThem1ActionPerformed
+
+    private void btnXoa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoa1ActionPerformed
+        String id = txtMa.getText();
+        User u = new User(Integer.parseInt(id), "", "", "", "");
+        int result = userImpl.delete(u);
+        if(result > 0) {
+            Helpers.MessageBox("Success", "Delete successfully", "success");
+            loadData();
+        } else {
+            Helpers.MessageBox("False", "Opps! Something went wrong", "error");
+        }
+    }//GEN-LAST:event_btnXoa1ActionPerformed
+
+    private void btnCapNhat1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhat1ActionPerformed
+        int id = Integer.parseInt(txtMa.getText());
+        String name = txtHoTen.getText();
+        String username = txtUsername.getText();
+        String password = txtMatKhau.getText();
+        String type = "admin";
+        if (cmbLoaiNguoiDung.getSelectedIndex() == 1) {
+            type = "user";
+        }
+        User u = new User(id, name, username, type, password);
+        int result = userImpl.update(u);
+        if(result > 0) {
+            Helpers.MessageBox("Success", "Edit successfully", "success");
+            loadData();
+        } else {
+            Helpers.MessageBox("False", "Opps! Something went wrong", "error");
+        }
+    }//GEN-LAST:event_btnCapNhat1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,6 +321,17 @@ public class QuanLyNguoiDung extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void loadData() {
+        User[] users = userImpl.list();
+        System.out.println(users);
+        
+        DefaultTableModel dtm = (DefaultTableModel)tblData.getModel();
+        dtm.setRowCount(0);
+        for(User u: users) {
+            dtm.addRow(new Object[] {u.id, u.name, u.username, u.password, u.type});
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCapNhat1;
@@ -249,7 +347,7 @@ public class QuanLyNguoiDung extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tblData;
     private javax.swing.JTextField txtHoTen;
     private javax.swing.JTextField txtMa;
     private javax.swing.JTextField txtMatKhau;

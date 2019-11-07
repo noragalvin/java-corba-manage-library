@@ -6,12 +6,15 @@ module ObjectInterface {
         };
 
         typedef sequence <Bill> Bills;
+        typedef sequence<long> longs;
 
         interface BillInterface {
             attribute long id, status, readerID;
             attribute string createdAt, deadline;
             Bill getSingle(in long id);
             Bills list(in long readerID);
+            void borrowBook(in long readerID, in longs bookIDs, in string deadline);
+            boolean payBook(in long billID);
         };
     };
 };

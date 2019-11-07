@@ -6,6 +6,12 @@
 
 package quanlythuvien;
 
+import ObjectInterface.BookModule.BookInterface;
+import ObjectInterface.BookModule.BookInterfaceHelper;
+import ObjectInterface.CategoryModule.CategoryInterface;
+import ObjectInterface.CategoryModule.CategoryInterfaceHelper;
+import ObjectInterface.ReaderModule.ReaderInterface;
+import ObjectInterface.ReaderModule.ReaderInterfaceHelper;
 import ObjectInterface.UserModule.UserInterface;
 import ObjectInterface.UserModule.UserInterfaceHelper;
 import java.io.BufferedReader;
@@ -23,6 +29,9 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
  */
 public class QuanLyThuVien {
     static UserInterface userImpl;
+    static BookInterface bookImpl;
+    static CategoryInterface catImpl;
+    static ReaderInterface readerImpl;
 
     /**
      * @param args the command line arguments
@@ -40,6 +49,9 @@ public class QuanLyThuVien {
 
             // resolve the Object Reference in Naming
             userImpl = UserInterfaceHelper.narrow(ncRef.resolve_str("User"));
+            catImpl = CategoryInterfaceHelper.narrow(ncRef.resolve_str("Category"));
+            bookImpl = BookInterfaceHelper.narrow(ncRef.resolve_str("Book"));
+            readerImpl = ReaderInterfaceHelper.narrow(ncRef.resolve_str("Reader"));
                     
             (new DangNhap()).setVisible(true);
             

@@ -13,6 +13,9 @@ module ObjectInterface {
             User login(in string username, in string password);
             User getSingle(in long id);
             Users list();
+            long add(in User u);
+            long delete(in User u);
+            long update(in User u);
         };
     };
 };

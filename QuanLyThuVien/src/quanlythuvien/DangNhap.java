@@ -110,7 +110,7 @@ public class DangNhap extends javax.swing.JFrame {
         } else {
             this.setVisible(false);
             Store.State.currentUser = userLogin;
-            new NoraQuanLyUser().setVisible(true);
+            new GiaoDienChinh().setVisible(true);
         }
             
     }//GEN-LAST:event_btnDangNhapActionPerformed

@@ -6,6 +6,7 @@ import ObjectInterface.UserModule.UserHolder;
 import ObjectInterface.UserModule.UserInterfacePOA;
 import Store.State;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -108,16 +109,14 @@ public class UserImplement extends UserInterfacePOA {
 
     @Override
     public User[] list() {
-        String query = String.format("SELECT * FROM users");
+        String query = String.format("SELECT * FROM users where status = 1");
 
         ArrayList<User> users = new ArrayList<User>();
-
         
         ResultSet rs = db.getData(query);
         
         try {
             while(rs.next()){
-                //DTOCategory cat = new DTOCategory(rs.getInt("catID"), rs.getInt("catStatus"), rs.getString("catName"));
                 User u = new User(rs.getInt("id"), rs.getString("name"), rs.getString("username"), rs.getString("type"), rs.getString("password"));
                 users.add(u);
             }
@@ -133,6 +132,72 @@ public class UserImplement extends UserInterfacePOA {
     @Override
     public User getSingle(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int add(User u) {
+        int n = 0;
+        String query = "insert into users(name, username, password, type) values (?, ?, ?, ?)";
+        PreparedStatement pre;
+        try {
+            pre = conn.prepareStatement(query);
+            
+            pre.setString(1, u.name);
+            pre.setString(2, u.username);
+            pre.setString(3, u.password);
+            pre.setString(4, u.type);
+
+            
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ObjectInterface.UserModule.User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
+    }
+
+    @Override
+    public int delete(User u) {
+        int n = 0;
+                
+        String query = "UPDATE users SET status = 0 WHERE id = ?";
+        PreparedStatement pre;
+        
+        try {
+            pre = conn.prepareStatement(query);
+            
+            pre.setInt(1, u.id);
+            
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ObjectInterface.UserModule.User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return n;
+    }
+
+    @Override
+    public int update(User u) {
+        int n = 0;
+        
+        String query = "UPDATE users SET name = ?, username = ?, password = ?, type = ? WHERE id = ?";
+        PreparedStatement pre;
+        
+        try {
+            pre = conn.prepareStatement(query);
+            
+            pre.setString(1, u.name);
+            pre.setString(2, u.username);
+            pre.setString(3, u.password);
+            pre.setString(4, u.type);
+            pre.setInt(5, u.id);
+
+            System.out.println(pre.toString());
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ObjectInterface.UserModule.User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return n;
     }
     
 }
