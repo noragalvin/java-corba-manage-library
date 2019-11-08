@@ -1,9 +1,12 @@
 
+import Implement.BillImplement;
 import Implement.BookImplement;
 import Implement.CategoryImplement;
 import Implement.Database;
 import Implement.ReaderImplement;
 import Implement.UserImplement;
+import ObjectInterface.BillModule.BillInterface;
+import ObjectInterface.BillModule.BillInterfaceHelper;
 import ObjectInterface.BookModule.BookInterface;
 import ObjectInterface.BookModule.BookInterfaceHelper;
 import ObjectInterface.CategoryModule.CategoryInterface;
@@ -42,16 +45,25 @@ public class Server {
             readerImpl.setORB(orb);
             BookImplement bookImpl = new BookImplement() {};
             bookImpl.setORB(orb);
+            BillImplement billImpl = new BillImplement() {};
+            billImpl.setORB(orb);
 
             // get object reference from the servant            
+            // User
             org.omg.CORBA.Object refUser = rootpoa.servant_to_reference(userImpl);
             UserInterface hrefUser = UserInterfaceHelper.narrow(refUser);
+            // Category
             org.omg.CORBA.Object refCat = rootpoa.servant_to_reference(catImpl);
             CategoryInterface hrefCat = CategoryInterfaceHelper.narrow(refCat);
+            // Reader
             org.omg.CORBA.Object refReader = rootpoa.servant_to_reference(readerImpl);
             ReaderInterface hrefReader = ReaderInterfaceHelper.narrow(refReader);
+            // Book
             org.omg.CORBA.Object refBook = rootpoa.servant_to_reference(bookImpl);
             BookInterface hrefBook = BookInterfaceHelper.narrow(refBook);
+            // Bill
+            org.omg.CORBA.Object refBill = rootpoa.servant_to_reference(billImpl);
+            BillInterface hrefBill = BillInterfaceHelper.narrow(refBill);
 
             // get the root naming context
             // NameService invokes the name service
@@ -69,6 +81,8 @@ public class Server {
             ncRef.rebind(pathReader, hrefReader);
             NameComponent pathBook[] = ncRef.to_name("Book");
             ncRef.rebind(pathBook, hrefBook);
+            NameComponent pathBill[] = ncRef.to_name("Bill");
+            ncRef.rebind(pathBill, hrefBill);
 
             System.out.println("Ready..");
 
