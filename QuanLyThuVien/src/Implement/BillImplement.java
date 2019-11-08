@@ -109,7 +109,8 @@ public class BillImplement extends BillInterfacePOA {
             java.sql.Date date = new java.sql.Date(currentDate.getTime());
             pre.setDate(2, date);
             pre.setString(3, deadline);
-            pre.executeUpdate();
+            int n = pre.executeUpdate();
+            System.out.println(n);
         } catch (SQLException ex) {
             Logger.getLogger(ObjectInterface.UserModule.User.class.getName()).log(Level.SEVERE, null, ex);
         }
