@@ -6,6 +6,8 @@
 
 package quanlythuvien;
 
+import ObjectInterface.BillModule.BillInterface;
+import ObjectInterface.BillModule.BillInterfaceHelper;
 import ObjectInterface.BookModule.BookInterface;
 import ObjectInterface.BookModule.BookInterfaceHelper;
 import ObjectInterface.CategoryModule.CategoryInterface;
@@ -32,6 +34,7 @@ public class QuanLyThuVien {
     static BookInterface bookImpl;
     static CategoryInterface catImpl;
     static ReaderInterface readerImpl;
+    static BillInterface billImpl;
 
     /**
      * @param args the command line arguments
@@ -52,6 +55,7 @@ public class QuanLyThuVien {
             catImpl = CategoryInterfaceHelper.narrow(ncRef.resolve_str("Category"));
             bookImpl = BookInterfaceHelper.narrow(ncRef.resolve_str("Book"));
             readerImpl = ReaderInterfaceHelper.narrow(ncRef.resolve_str("Reader"));
+            billImpl = BillInterfaceHelper.narrow(ncRef.resolve_str("Bill"));
                     
             (new DangNhap()).setVisible(true);
             

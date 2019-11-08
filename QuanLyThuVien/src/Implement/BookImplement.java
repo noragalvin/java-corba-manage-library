@@ -38,6 +38,7 @@ public class BookImplement extends BookInterfacePOA {
     public void setORB(ORB orb_val) {
         orb = orb_val;
     }
+    
     @Override
     public int id() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -261,6 +262,27 @@ public class BookImplement extends BookInterfacePOA {
     @Override
     public NXB[] listNXB() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Book[] listByCatID(int id) {
+        String query = String.format("SELECT books.*, categories.categoryName as categoryName FROM books inner join categories on categories.id = books.categoryID where books.status = 1 and categoryID = " + id);
+
+        ArrayList<Book> books = new ArrayList<Book>();
+        
+        ResultSet rs = db.getData(query);
+        
+        try {
+            while(rs.next()){
+                Book b = new Book(rs.getInt("id"), rs.getInt("inventory"), rs.getInt("borrowAmount"), rs.getInt("categoryID"), rs.getString("bookName"), rs.getString("publishingCompany"), rs.getString("createdAt"), rs.getString("categoryName"), rs.getString("author"));
+                books.add(b);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ObjectInterface.UserModule.User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Book result[] = new Book[books.size()];
+        
+        return books.toArray(result);
     }
     
 }

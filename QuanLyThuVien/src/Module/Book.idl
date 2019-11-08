@@ -22,6 +22,7 @@ module ObjectInterface {
             attribute string bookName, publishingCompany, createdAt, categoryName, author;
             Book getSingle(in long id);
             Books list();
+            Books listByCatID(in long id);
             long add(in Book o);
             long delete(in Book o);
             long update(in Book o);
