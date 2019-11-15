@@ -8,6 +8,14 @@ package quanlythuvien;
 import ObjectInterface.BookModule.Book;
 import ObjectInterface.CategoryModule.Category;
 import ObjectInterface.ReaderModule.Reader;
+import ObjectInterface.UserModule.User;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import static quanlythuvien.QuanLyThuVien.billImpl;
 import static quanlythuvien.QuanLyThuVien.bookImpl;
@@ -29,6 +37,39 @@ public class MuonSach extends javax.swing.JFrame {
         
         DefaultTableModel dtm = (DefaultTableModel)tblChon.getModel();
         dtm.setRowCount(0);
+        this.setLocationRelativeTo(null);
+        
+        txtMaDG.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+              warn();
+            }
+            public void removeUpdate(DocumentEvent e) {
+              txtTenDG.setText("");
+            }
+            public void insertUpdate(DocumentEvent e) {
+              warn();
+            }
+
+            public void warn() {
+                if(txtMaDG.getText().trim().isEmpty()) {
+                    txtTenDG.setText("");
+                    Helpers.MessageBox("Có lỗi xảy ra", "Vui lòng nhập ID hợp lệ", "");
+                    return;
+                }
+                if (Integer.parseInt(txtMaDG.getText())<=0){
+                    txtTenDG.setText("");
+                    Helpers.MessageBox("Có lỗi xảy ra", "Vui lòng nhập ID hợp lệ", "");
+                }
+                
+                User u = QuanLyThuVien.userImpl.getSingle(Integer.parseInt(txtMaDG.getText()));
+                if(u.id == 0) {
+                    txtTenDG.setText("");
+                    Helpers.MessageBox("Có lỗi xảy ra", "Vui lòng nhập ID hợp lệ", "");
+                    return;
+                }
+                txtTenDG.setText(u.name);
+            }
+        });
     }
 
     /**
@@ -71,6 +112,7 @@ public class MuonSach extends javax.swing.JFrame {
         jPanel10 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         btnThem = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         jTextField2.setText("jTextField2");
 
@@ -241,6 +283,11 @@ public class MuonSach extends javax.swing.JFrame {
         btnHuy.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnHuy.setForeground(new java.awt.Color(255, 255, 255));
         btnHuy.setText("Hủy");
+        btnHuy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuyActionPerformed(evt);
+            }
+        });
 
         jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.cyan, null));
 
@@ -414,6 +461,13 @@ public class MuonSach extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Quay lại");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -431,10 +485,11 @@ public class MuonSach extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnMuon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnHuy, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnMuon, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                        .addComponent(btnHuy, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)))
                 .addGap(77, 77, 77)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -457,8 +512,10 @@ public class MuonSach extends javax.swing.JFrame {
                                         .addComponent(btnThem)
                                         .addGap(26, 26, 26)))
                                 .addComponent(btnMuon)
-                                .addGap(46, 46, 46)
+                                .addGap(27, 27, 27)
                                 .addComponent(btnHuy)
+                                .addGap(34, 34, 34)
+                                .addComponent(jButton1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -517,16 +574,46 @@ public class MuonSach extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHuyActionPerformed
 
     private void btnMuonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMuonActionPerformed
-        DefaultTableModel model = (DefaultTableModel)tblChon.getModel();
-        int totalBorrow = model.getRowCount();
-        int[] ids = new int[totalBorrow];
+        try {
+            
+            String pattern = "yyyy-MM-dd";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
-        for(int i = 0; i < totalBorrow; i++) {
-            ids[i] = Integer.parseInt(model.getValueAt(i, 0).toString());
+            Date date = simpleDateFormat.parse(txtNgayTra.getText());
+
+            DefaultTableModel model = (DefaultTableModel)tblChon.getModel();
+            int totalBorrow = model.getRowCount();
+            int[] ids = new int[totalBorrow];
+
+            for(int i = 0; i < totalBorrow; i++) {
+                ids[i] = Integer.parseInt(model.getValueAt(i, 0).toString());
+            }
+            if(txtTenDG.getText().isEmpty()) {
+                throw new Error("Bạn chưa chọn người dùng");
+            }
+            if(ids.length == 0) {
+                throw new Error("Bạn chưa thêm sách");
+            }
+            billImpl.borrowBook(Store.State.currentUser.id, ids, txtNgayTra.getText());
+
+            Helpers.MessageBox("Success", "Add successfully", "success");
         }
-        billImpl.borrowBook(Store.State.currentUser.id, ids, txtNgayTra.getText());
-
+        catch(Error e) {
+            Helpers.MessageBox("Có lỗi xảy ra", e.getMessage(), "error");
+        }
+        catch (ParseException e) {
+            System.out.println(e);
+            Helpers.MessageBox("Có lỗi xảy ra", "Ngày trả không khớp định dạng: yyyy/MM/dd", "error");
+        }
+        catch (Exception e) {
+            Helpers.MessageBox("Có lỗi xảy ra", "Something went wrong", "error");
+        }
     }//GEN-LAST:event_btnMuonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.setVisible(false);
+        new GiaoDienChinh().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -577,6 +664,7 @@ public class MuonSach extends javax.swing.JFrame {
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnMuon;
     private javax.swing.JButton btnThem;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;

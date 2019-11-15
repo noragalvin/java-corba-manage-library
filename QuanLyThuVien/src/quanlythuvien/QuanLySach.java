@@ -365,7 +365,7 @@ public class QuanLySach extends javax.swing.JFrame {
         String nxb = txtNXB.getText();
         int ton = Integer.parseInt(txtSLTon.getText());
         
-        Book b = new Book(0, ton, 0, category_id, name, nxb, "", "", author);
+        Book b = new Book(0, ton, 0, category_id, 0, name, nxb, "", "", author);
         
         int result = bookImpl.add(b);
         if(result > 0) {
@@ -378,7 +378,7 @@ public class QuanLySach extends javax.swing.JFrame {
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         String id = txtMaSach.getText();
-        Book b = new Book(Integer.parseInt(id), 0, 0, 0, "", "", "", "", "");
+        Book b = new Book(Integer.parseInt(id), 0, 0, 0, 0, "", "", "", "", "");
         int result = bookImpl.delete(b);
         if(result > 0) {
             Helpers.MessageBox("Success", "Delete successfully", "success");
@@ -397,7 +397,7 @@ public class QuanLySach extends javax.swing.JFrame {
         String nxb = txtNXB.getText();
         int ton = Integer.parseInt(txtSLTon.getText());
         
-        Book b = new Book(id, ton, 0, category_id, name, nxb, "", "", author);
+        Book b = new Book(id, ton, 0, category_id, 0, name, nxb, "", "", author);
         
         int result = bookImpl.update(b);
         if(result > 0) {

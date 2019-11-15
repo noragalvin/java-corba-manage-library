@@ -1,7 +1,7 @@
 module ObjectInterface {
     module BookModule {
         struct Book{
-            long id, inventory, borrowAmount, categoryID;
+            long id, inventory, borrowAmount, categoryID, currentBorrow;
             string bookName, publishingCompany, createdAt, categoryName, author;
         };
 
@@ -18,11 +18,12 @@ module ObjectInterface {
         typedef sequence <NXB> NXBs;
 
         interface BookInterface {
-            attribute long id, inventory, borrowAmount, categoryID;
+            attribute long id, inventory, borrowAmount, categoryID, currentBorrow;
             attribute string bookName, publishingCompany, createdAt, categoryName, author;
             Book getSingle(in long id);
             Books list();
             Books listByCatID(in long id);
+            Books listByBillID(in long id);
             long add(in Book o);
             long delete(in Book o);
             long update(in Book o);

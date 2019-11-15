@@ -2,7 +2,7 @@ module ObjectInterface {
     module BillModule {
         struct Bill{
             long id, status, readerID;
-            string createdAt, deadline;
+            string createdAt, deadline, readerName, bookName;
         };
 
         typedef sequence <Bill> Bills;
@@ -10,11 +10,11 @@ module ObjectInterface {
 
         interface BillInterface {
             attribute long id, status, readerID;
-            attribute string createdAt, deadline;
+            attribute string createdAt, deadline, readerName, bookName;
             Bill getSingle(in long id);
             Bills list(in long readerID);
             void borrowBook(in long readerID, in longs bookIDs, in string deadline);
-            boolean payBook(in long billID);
+            boolean payBook(in longs ids, in long billID);
         };
     };
 };

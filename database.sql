@@ -66,7 +66,8 @@ create table bill_details
 	billID int foreign key references bills(id) on update cascade,
 	bookID int foreign key references books(id) on update cascade,
 	borrowAmount int,
-	primary key(bookID, billID)
+	primary key(bookID, billID),
+	status bit default 0
 )
 
 insert into users(name, username, password, type) values ('Bui Ngoc Minh',  'minhnora98', '123456', 'admin');
@@ -102,3 +103,13 @@ insert into readers(readerName, birthday, address, phoneNumber, gender, email) v
 
 select * from readers;
 SELECT TOP 1 * FROM readers ORDER BY id DESC;
+
+select * from books;
+select * from bills;
+select * from bill_details;
+
+select bills.*, readers.readerName, books.bookName from bills inner join bill_details on bills.id = bill_details.billID inner join books on books.id = bill_details.bookID inner join readers on readers.id = bills.readerID where bills.status = 0 and bills.id = 1;
+
+select books.* from books inner join bill_details on bill_details.bookID = books.id inner join bills on bills.id = bill_details.billID where bills.status = 0 and bill_details.billID = 1;
+
+select books.*, bill_details.borrowAmount as currentBorrow from books inner join bill_details on bill_details.bookID = books.id inner join bills on bills.id = bill_details.billID where bills.status = 0 and bill_details.billID = 1;

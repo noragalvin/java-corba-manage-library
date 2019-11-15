@@ -131,7 +131,19 @@ public class UserImplement extends UserInterfacePOA {
 
     @Override
     public User getSingle(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String query = String.format("SELECT * FROM users WHERE id = '%d'", id);
+        
+        ResultSet rs = db.getData(query);
+        try {
+            if(rs.next()) {
+                this.user = new ObjectInterface.UserModule.User(rs.getInt("id"), rs.getString("name"), rs.getString("username"), rs.getString("type"), rs.getString("password"));
+            } else {
+                this.user = new ObjectInterface.UserModule.User(0, "", "", "", "");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ObjectInterface.UserModule.User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return this.user;
     }
 
     @Override

@@ -134,7 +134,7 @@ public class BookImplement extends BookInterfacePOA {
         
         try {
             while(rs.next()){
-                Book b = new Book(rs.getInt("id"), rs.getInt("inventory"), rs.getInt("borrowAmount"), rs.getInt("categoryID"), rs.getString("bookName"), rs.getString("publishingCompany"), rs.getString("createdAt"), rs.getString("categoryName"), rs.getString("author"));
+                Book b = new Book(rs.getInt("id"), rs.getInt("inventory"), rs.getInt("borrowAmount"), rs.getInt("categoryID"), rs.getInt("currentBorrow"), rs.getString("bookName"), rs.getString("publishingCompany"), rs.getString("createdAt"), rs.getString("categoryName"), rs.getString("author"));
                 books.add(b);
             }
         } catch (SQLException ex) {
@@ -274,7 +274,7 @@ public class BookImplement extends BookInterfacePOA {
         
         try {
             while(rs.next()){
-                Book b = new Book(rs.getInt("id"), rs.getInt("inventory"), rs.getInt("borrowAmount"), rs.getInt("categoryID"), rs.getString("bookName"), rs.getString("publishingCompany"), rs.getString("createdAt"), rs.getString("categoryName"), rs.getString("author"));
+                Book b = new Book(rs.getInt("id"), rs.getInt("inventory"), rs.getInt("borrowAmount"), rs.getInt("categoryID"), 0, rs.getString("bookName"), rs.getString("publishingCompany"), rs.getString("createdAt"), rs.getString("categoryName"), rs.getString("author"));
                 books.add(b);
             }
         } catch (SQLException ex) {
@@ -283,6 +283,37 @@ public class BookImplement extends BookInterfacePOA {
         Book result[] = new Book[books.size()];
         
         return books.toArray(result);
+    }
+
+    @Override
+    public Book[] listByBillID(int id) {
+        String query = String.format("select books.*, bill_details.borrowAmount as currentBorrow from books inner join bill_details on bill_details.bookID = books.id inner join bills on bills.id = bill_details.billID where bill_details.status = 0 and bill_details.billID = %d", id);
+
+        ArrayList<Book> books = new ArrayList<Book>();
+        
+        ResultSet rs = db.getData(query);
+        
+        try {
+            while(rs.next()){
+                Book b = new Book(rs.getInt("id"), rs.getInt("inventory"), rs.getInt("borrowAmount"), rs.getInt("categoryID"), rs.getInt("currentBorrow"), rs.getString("bookName"), rs.getString("publishingCompany"), rs.getString("createdAt"), "", rs.getString("author"));
+                books.add(b);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ObjectInterface.UserModule.User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Book result[] = new Book[books.size()];
+        
+        return books.toArray(result);
+    }
+
+    @Override
+    public int currentBorrow() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void currentBorrow(int newCurrentBorrow) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
