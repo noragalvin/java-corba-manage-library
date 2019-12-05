@@ -1,5 +1,0 @@
-module TempConvertApp {
-    interface Convert {
-        double cToF(in double c);
-    };
-};

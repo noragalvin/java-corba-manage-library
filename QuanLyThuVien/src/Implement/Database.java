@@ -47,26 +47,6 @@ public class Database {
          this("jdbc:sqlserver://localhost:1433;instance=SQLEXPRESS;databaseName=QLTV", "sa", "123456");
     }
     
-    public Connection connectDB() {
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").newInstance();
-
-            conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;instance=SQLEXPRESS;databaseName=QLTV", "sa", "123456");
-            System.out.println("Connected");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return conn;
-    }
-    
-    
-    
     public Connection getConnection(){
         return conn;
     }
